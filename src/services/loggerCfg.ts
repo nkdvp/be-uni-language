@@ -1,4 +1,4 @@
-import { ExpressHandler, nextpayResponse, nextpayError } from '../interfaces/expressHandler';
+import { ExpressHandler, customResponse, customError } from '../interfaces/expressHandler';
 
 import langs from '../constants/langs';
 import Logger from '../libs/logger';
@@ -24,11 +24,11 @@ const apis: ExpressHandler[] = [
         logger.silly('silly');
         // ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
-        return nextpayResponse(res, '', '', loggingConfig);
+        return customResponse(res, '', '', loggingConfig);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err);
 
-        return nextpayError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
     },
   },
@@ -51,11 +51,11 @@ const apis: ExpressHandler[] = [
           Logger.changeLogLevel(level);
         }
 
-        return nextpayResponse(res, '', '', loggingConfig);
+        return customResponse(res, '', '', loggingConfig);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err);
 
-        return nextpayError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
     },
   },

@@ -22,7 +22,7 @@ export interface NextpayResponse {
   data?: any;
 }
 
-export function nextpayResponse(
+export function customResponse(
   res: Response,
   message?: string,
   code?: string | number,
@@ -40,7 +40,7 @@ export function nextpayResponse(
   return <Response>res.status(statusCode).json(response);
 }
 
-export function nextpayError(
+export function customError(
   res: Response,
   message?: string,
   code?: string,

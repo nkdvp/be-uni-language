@@ -1,4 +1,4 @@
-import { ExpressHandler, nextpayResponse, nextpayError } from '../interfaces/expressHandler';
+import { ExpressHandler, customResponse, customError } from '../interfaces/expressHandler';
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
 
@@ -9,19 +9,17 @@ const apis: ExpressHandler[] = [
     path: '/mail',
     method: 'POST',
     params: {
-      $$strict: true, 
+      $$strict: true,
     },
     action: async (req, res) => {
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
-        
-
-        return nextpayResponse(res, '', '', null);
+        return customResponse(res, '', '', null);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err);
 
-        return nextpayError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
     },
   },
