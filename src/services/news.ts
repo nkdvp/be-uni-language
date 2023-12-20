@@ -37,12 +37,34 @@ const apis: ExpressHandler[] = [
       }
     },
   },
+  // a news
+  {
+    path: '/news/:id',
+    method: 'GET',
+    params: {
+      $$strict: false,
+    },
+    action: async (req, res) => {
+      try {
+        logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
+
+        const id = req.params.id;
+        const result = await newsModel.findById(id);
+
+        return customResponse(res, '', '', result);
+      } catch (err: any) {
+        logger.error(req.originalUrl, req.method, 'error:', err);
+
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+      }
+    },
+  },
   // create a news
   {
     path: '/news',
     method: 'POST',
     params: {
-      $$strict: false,
+      $$strict: true,
       title: 'string',
       avatar: 'string|optional',
       description: 'string',
