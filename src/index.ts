@@ -5,7 +5,7 @@ apmAgent;
 import cluster from 'cluster';
 import os from 'os';
 import ExpressServer from './express';
-// import mongodb from './libs/mongodb';
+import mongodb from './libs/mongodb';
 // import mysql from './libs/mysql';
 // import redis from './libs/redis';
 import Logger from './libs/logger';
@@ -17,7 +17,7 @@ async function start() {
   ExpressServer();
 
   // >>>>>>MONGODB
-  // mongodb();
+  mongodb();
 
   // >>>>>>MYSQL
   // const sqlConnection: any = await mysql;

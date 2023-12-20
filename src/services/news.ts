@@ -2,6 +2,9 @@ import { ExpressHandler, customResponse, customError } from '../interfaces/expre
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
 import newsModel from '../models/news.model';
+import { SearchPagingMongoValidator } from '../DTOs/common';
+import { toMongoCriteria } from '../libs/querystring';
+import { newsFields } from '../constants/fieldDescriptions';
 
 const logger = Logger.create('news.ts');
 const apis: ExpressHandler[] = [
@@ -9,14 +12,24 @@ const apis: ExpressHandler[] = [
   {
     path: '/news/search',
     method: 'POST',
-    params: {
-      $$strict: true,
-    },
+    params: SearchPagingMongoValidator,
     action: async (req, res) => {
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
-        return customResponse(res, '', '', null);
+        const { queryString } = req.body;
+        const { page, perPage, sort } = req.body.pagingAndSorting;
+        if (!sort._id) sort._id = -1;
+        const filter = toMongoCriteria(queryString, newsFields);
+        const finalFilter = JSON.parse(filter);
+        const result = await newsModel
+          .find(finalFilter)
+          .skip((page - 1) * perPage)
+          .limit(perPage)
+          .sort(sort)
+          .lean();
+
+        return customResponse(res, '', '', result);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err);
 
@@ -29,23 +42,29 @@ const apis: ExpressHandler[] = [
     path: '/news',
     method: 'POST',
     params: {
-      $$strict: true,
+      $$strict: false,
       title: 'string',
+      avatar: 'string|optional',
       description: 'string',
-      group: 'string',
+      group: {
+        type: 'string',
+        default: 'general',
+      },
       tags: {
         type: 'array',
         items: 'string',
+        default: [],
       },
-      optional: true,
     },
     action: async (req, res) => {
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
-        const { title, description, group, tags } = req.body;
-        const result = newsModel.create({
+        const { title, avatar, description, group, tags } = req.body;
+        // const test = await newsModel.findOne().lean(); return customResponse(res, '', '', test);
+        const result = await newsModel.create({
           title,
+          avatar,
           description,
           group: group || 'other',
           tags,
@@ -66,6 +85,7 @@ const apis: ExpressHandler[] = [
     params: {
       $$strict: true,
       title: 'string|optional',
+      avatar: 'string|optional',
       description: 'string|optional',
       group: 'string|optional',
       tags: {
@@ -80,9 +100,10 @@ const apis: ExpressHandler[] = [
 
         const id = req.params.id;
         if (!id) return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
-        const { title, description, group, tags } = req.body;
+        const { title, avatar, description, group, tags } = req.body;
         const result = newsModel.findOneAndUpdate({
           title,
+          avatar,
           description,
           group: group || 'other',
           tags,
