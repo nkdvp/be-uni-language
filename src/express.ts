@@ -122,7 +122,7 @@ async function ExpressServer() {
   app.use(defaultRoute);
   app.use(unhandedErrorFault);
   // start server
-  const expressPort = process.env.HTTP_PORT || process.env.PORT || 80;
+  const expressPort = process.env.HTTP_PORT || process.env.PORT || 8888;
   const server = app.listen(expressPort, () => {
     logger.info('SERVER STARTED AT', expressPort);
   });

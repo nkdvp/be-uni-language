@@ -1,11 +1,12 @@
 # syntax = docker/dockerfile:1.3
-FROM hub.saobang.vn/nextpay-common/node:18.17-alpine3.18
+FROM node:18.17-alpine3.18
+# FROM docker.io/nkdvp/be-uni-language:v1.0
 RUN mkdir /app
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN --mount=type=cache,target=/root/.npm npm ci
+RUN npm ci
 
 COPY . .
 
@@ -15,4 +16,4 @@ RUN rm -rf src
 
 ENV NODE_ENV=production
 
-CMD ["npm", "start"]
+CMD ["npm","start"]
