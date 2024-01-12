@@ -9,10 +9,11 @@ import mongodb from './libs/mongodb';
 // import mysql from './libs/mysql';
 // import redis from './libs/redis';
 import Logger from './libs/logger';
-
+const serviceName =
+  process.env.SERVICE_NAME || process.env.npm_package_name || 'nodejs-express-template';
 const logger = Logger.create('index.ts');
 async function start() {
-  logger.info(`>>>>>>>>>>${process.env.npm_package_name.toUpperCase()}<<<<<<<<<<`);
+  logger.info(`>>>>>>>>>>${serviceName.toUpperCase()}<<<<<<<<<<`);
   // >>>>>>EXPRESS
   ExpressServer();
 

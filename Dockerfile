@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM node:18.17-alpine3.18
+FROM node:18.17.1-alpine3.18
 # FROM docker.io/nkdvp/be-uni-language:v1.0
 RUN mkdir /app
 WORKDIR /app

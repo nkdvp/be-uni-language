@@ -4,7 +4,8 @@ const { isObject, trimEnd } = lodashPkg;
 import { SPLAT } from 'triple-beam';
 const { combine, timestamp, printf, colorize, errors, align } = format;
 import { loggingConfig } from '../constants/logCfg';
-const serviceName = process.env.npm_package_name;
+const serviceName =
+  process.env.SERVICE_NAME || process.env.npm_package_name || 'nodejs-express-template';
 function formatObject(param: any) {
   if (param && param.stack) {
     if (param.ctx && param.type) {

@@ -8,6 +8,9 @@ function wait(ms: number) {
     }, ms);
   });
 }
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  'mongodb://admin:W8k8ZwFmSGfYVkay@ac-xoclsjj-shard-00-00.g7pfgmy.mongodb.net:27017,ac-xoclsjj-shard-00-01.g7pfgmy.mongodb.net:27017,ac-xoclsjj-shard-00-02.g7pfgmy.mongodb.net:27017/test?ssl=true&replicaSet=atlas-3kilsq-shard-0&authSource=admin&retryWrites=true&w=majority';
 
 export default function connect() {
   const logger = Logger.create('mongodb');
@@ -33,11 +36,11 @@ export default function connect() {
     logger.info('MongoDB disconnected!');
     await wait(2000);
     try {
-      await mongoose.connect(process.env.MONGO_URI, {});
+      await mongoose.connect(MONGO_URI, {});
     } catch (e: any) {
       logger.error(e.message);
     }
   });
 
-  mongoose.connect(process.env.MONGO_URI, {});
+  mongoose.connect(MONGO_URI, {});
 }

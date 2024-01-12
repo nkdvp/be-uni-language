@@ -31,7 +31,7 @@ const apis: ExpressHandler[] = [
 
         return customResponse(res, '', '', result);
       } catch (err: any) {
-        logger.error(req.originalUrl, req.method, 'error:', err);
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
 
         return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
@@ -53,7 +53,7 @@ const apis: ExpressHandler[] = [
 
         return customResponse(res, '', '', result);
       } catch (err: any) {
-        logger.error(req.originalUrl, req.method, 'error:', err);
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
 
         return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
@@ -88,13 +88,13 @@ const apis: ExpressHandler[] = [
           title,
           avatar,
           description,
-          group: group || 'other',
+          group: group,
           tags,
         });
 
         return customResponse(res, '', '', result);
       } catch (err: any) {
-        logger.error(req.originalUrl, req.method, 'error:', err);
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
 
         return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
@@ -127,13 +127,15 @@ const apis: ExpressHandler[] = [
           title,
           avatar,
           description,
-          group: group || 'other',
+          group,
           tags,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         });
 
         return customResponse(res, '', '', result);
       } catch (err: any) {
-        logger.error(req.originalUrl, req.method, 'error:', err);
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
 
         return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
       }
