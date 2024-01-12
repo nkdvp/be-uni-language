@@ -90,6 +90,8 @@ const apis: ExpressHandler[] = [
           description,
           group: group,
           tags,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         });
 
         return customResponse(res, '', '', result);
@@ -129,7 +131,6 @@ const apis: ExpressHandler[] = [
           description,
           group,
           tags,
-          createdAt: new Date(),
           updatedAt: new Date(),
         });
 
