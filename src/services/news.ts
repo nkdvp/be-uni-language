@@ -65,9 +65,11 @@ const apis: ExpressHandler[] = [
     method: 'POST',
     params: {
       $$strict: true,
-      title: 'string',
+      titleVn: 'string',
+      descriptionVn: 'string',
+      titleEn: 'string|optional',
+      descriptionEn: 'string|optional',
       avatar: 'string|optional',
-      description: 'string',
       group: {
         type: 'string',
         default: 'general',
@@ -82,12 +84,14 @@ const apis: ExpressHandler[] = [
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
-        const { title, avatar, description, group, tags } = req.body;
+        const { titleVn, avatar, descriptionVn, titleEn, descriptionEn, group, tags } = req.body;
         // const test = await newsModel.findOne().lean(); return customResponse(res, '', '', test);
         const result = await newsModel.create({
-          title,
+          titleVn,
+          descriptionVn,
+          titleEn,
+          descriptionEn,
           avatar,
-          description,
           group: group,
           tags,
           createdAt: new Date(),
@@ -108,9 +112,11 @@ const apis: ExpressHandler[] = [
     method: 'PATCH',
     params: {
       $$strict: true,
-      title: 'string|optional',
+      titleVn: 'string|optional',
+      descriptionVn: 'string|optional',
+      titleEn: 'string|optional',
+      descriptionEn: 'string|optional',
       avatar: 'string|optional',
-      description: 'string|optional',
       group: 'string|optional',
       tags: {
         type: 'array',
@@ -124,11 +130,13 @@ const apis: ExpressHandler[] = [
 
         const id = req.params.id;
         if (!id) return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
-        const { title, avatar, description, group, tags } = req.body;
+        const { titleVn, avatar, descriptionVn, titleEn, descriptionEn, group, tags } = req.body;
         const result = newsModel.findOneAndUpdate({
-          title,
+          titleVn,
+          descriptionVn,
+          titleEn,
+          descriptionEn,
           avatar,
-          description,
           group,
           tags,
           updatedAt: new Date(),
