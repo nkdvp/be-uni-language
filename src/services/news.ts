@@ -65,10 +65,10 @@ const apis: ExpressHandler[] = [
     method: 'POST',
     params: {
       $$strict: true,
-      titleVn: 'string',
-      descriptionVn: 'string',
-      titleEn: 'string|optional',
-      descriptionEn: 'string|optional',
+      titleVn: 'string|min:10',
+      descriptionVn: 'string|min:10',
+      titleEn: 'string|min:10',
+      descriptionEn: 'string|min:10',
       avatar: 'string|optional',
       group: {
         type: 'string',
@@ -112,10 +112,10 @@ const apis: ExpressHandler[] = [
     method: 'PATCH',
     params: {
       $$strict: true,
-      titleVn: 'string|optional',
-      descriptionVn: 'string|optional',
-      titleEn: 'string|optional',
-      descriptionEn: 'string|optional',
+      titleVn: 'string|optional|min:10',
+      descriptionVn: 'string|optional|min:10',
+      titleEn: 'string|optional|min:10',
+      descriptionEn: 'string|optional|min:10',
       avatar: 'string|optional',
       group: 'string|optional',
       tags: {
