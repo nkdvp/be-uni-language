@@ -28,6 +28,29 @@ const apis: ExpressHandler[] = [
           .limit(perPage)
           .sort(sort)
           .lean();
+        const totalCount = await newsModel.count(finalFilter);
+
+        return customResponse(res, '', '', result);
+      } catch (err: any) {
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
+
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+      }
+    },
+  },
+  // Count for news
+  {
+    path: '/news/count',
+    method: 'POST',
+    params: SearchPagingMongoValidator,
+    action: async (req, res) => {
+      try {
+        logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
+
+        const { queryString } = req.body;
+        const filter = toMongoCriteria(queryString, newsFields);
+        const finalFilter = JSON.parse(filter);
+        const result = await newsModel.count(finalFilter).lean();
 
         return customResponse(res, '', '', result);
       } catch (err: any) {
@@ -115,7 +138,7 @@ const apis: ExpressHandler[] = [
       titleVn: 'string|optional|min:10',
       descriptionVn: 'string|optional|min:10',
       titleEn: 'string|optional|min:10',
-      descriptionEn: 'string|optional|min:10',
+      descriptionEn: 'string|optional|min:10 ',
       avatar: 'string|optional',
       group: 'string|optional',
       tags: {
