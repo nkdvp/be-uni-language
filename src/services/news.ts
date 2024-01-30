@@ -1,4 +1,4 @@
-import { ExpressHandler, customResponse, customError } from '../interfaces/expressHandler';
+import { ExpressHandler, customResponse, customError, pagingResponse } from '../interfaces/expressHandler';
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
 import newsModel from '../models/news.model';
@@ -30,7 +30,7 @@ const apis: ExpressHandler[] = [
           .lean();
         const totalCount = await newsModel.count(finalFilter);
 
-        return customResponse(res, '', '', result);
+        return pagingResponse(res, page, perPage, totalCount, '', langs.SUCCESS, result, 200);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err.message);
 
