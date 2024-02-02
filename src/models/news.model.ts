@@ -6,6 +6,8 @@ const testSchema = new mongoose.Schema<I_News>(
     titleVn: String,
     descriptionVn: String,
     titleEn: String,
+    summaryEn: String,
+    summaryVn: String,
     descriptionEn: String,
     group: String,
     tags: [String],

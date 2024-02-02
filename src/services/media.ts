@@ -1,7 +1,7 @@
 import { ExpressHandler, customResponse, customError } from '../interfaces/expressHandler';
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
-import upload from 'express-fileupload';
+import upload, { UploadedFile } from 'express-fileupload';
 
 const logger = Logger.create('media.ts');
 const apis: ExpressHandler[] = [
@@ -35,6 +35,8 @@ const apis: ExpressHandler[] = [
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
+        
+
         return customResponse(res, '', '', null);
       } catch (err: any) {
         logger.error(req.originalUrl, req.method, 'error:', err);
@@ -46,7 +48,14 @@ const apis: ExpressHandler[] = [
   // example update media file
   {
     path: '/test',
-    postValidatorMiddlewares: [upload({ limits: { fileSize: 100 * 1024 * 1024 } })],
+    postValidatorMiddlewares: [
+      upload({
+        limits: { fileSize: 100 * 1024 * 1024 },
+        useTempFiles: true,
+        tempFileDir: './tmp',
+        debug: true
+      }),
+    ],
     params: { $$strict: true },
     method: 'POST',
     action: async (req, res) => {
@@ -66,15 +75,24 @@ const apis: ExpressHandler[] = [
             });
           } else {
             // one file at time
-            logger.info('this is one file');
-            const file: any = req.files[name];
+            logger.info('this is one file: ');
+            const file = req.files[name] as UploadedFile;
             // if (mimeExcel.includes(file.mimetype))
             filesArray.push(file);
+            file.mv(`./src/files/${file.name}`, (err) => {
+              if (err) {
+                logger.error('save file failed: ', err);
+
+                return res.status(500).send(err);
+              }
+              logger.debug('file uploaded');
+            });
+            // await writeFile('./src/${name}', file, name);
           }
         });
         logger.debug(filesArray.length); // accept excel only
         if (filesArray.length === 0)
-          return customError(res, 'No Excel File Found', langs.BAD_REQUEST, null, 400);
+          return customError(res, 'No File Found', langs.BAD_REQUEST, null, 400);
         const result: any[] = [];
         // excelArray.forEach((file: UploadedFile) => {
         //   logger.info('file', file.name);

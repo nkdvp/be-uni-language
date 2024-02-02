@@ -1,10 +1,16 @@
-import { ExpressHandler, customResponse, customError, pagingResponse } from '../interfaces/expressHandler';
+import {
+  ExpressHandler,
+  customResponse,
+  customError,
+  pagingResponse,
+} from '../interfaces/expressHandler';
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
 import newsModel from '../models/news.model';
 import { SearchPagingMongoValidator } from '../DTOs/common';
 import { toMongoCriteria } from '../libs/querystring';
 import { newsFields } from '../constants/fieldDescriptions';
+import mongoose from 'mongoose';
 
 const logger = Logger.create('news.ts');
 const apis: ExpressHandler[] = [
@@ -72,6 +78,8 @@ const apis: ExpressHandler[] = [
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
         const id = req.params.id;
+        if (!mongoose.isValidObjectId(id))
+          return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
         const result = await newsModel.findById(id);
 
         return customResponse(res, '', '', result);
@@ -90,8 +98,10 @@ const apis: ExpressHandler[] = [
       $$strict: true,
       titleVn: 'string|min:10',
       descriptionVn: 'string|min:10',
+      summaryVn: 'string|min:10',
       titleEn: 'string|min:10',
       descriptionEn: 'string|min:10',
+      summaryEn: 'string|min:10',
       avatar: 'string|optional',
       group: {
         type: 'string',
@@ -107,13 +117,25 @@ const apis: ExpressHandler[] = [
       try {
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
-        const { titleVn, avatar, descriptionVn, titleEn, descriptionEn, group, tags } = req.body;
+        const {
+          titleVn,
+          avatar,
+          descriptionVn,
+          titleEn,
+          descriptionEn,
+          group,
+          tags,
+          summaryEn,
+          summaryVn,
+        } = req.body;
         // const test = await newsModel.findOne().lean(); return customResponse(res, '', '', test);
         const result = await newsModel.create({
           titleVn,
           descriptionVn,
           titleEn,
           descriptionEn,
+          summaryEn,
+          summaryVn,
           avatar,
           group: group,
           tags,
@@ -137,8 +159,10 @@ const apis: ExpressHandler[] = [
       $$strict: true,
       titleVn: 'string|optional|min:10',
       descriptionVn: 'string|optional|min:10',
+      summaryVn: 'string|min:10|optional',
       titleEn: 'string|optional|min:10',
       descriptionEn: 'string|optional|min:10 ',
+      summaryEn: 'string|min:10|optional',
       avatar: 'string|optional',
       group: 'string|optional',
       tags: {
@@ -153,12 +177,24 @@ const apis: ExpressHandler[] = [
 
         const id = req.params.id;
         if (!id) return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
-        const { titleVn, avatar, descriptionVn, titleEn, descriptionEn, group, tags } = req.body;
-        const result = newsModel.findOneAndUpdate({
+        const {
           titleVn,
+          avatar,
           descriptionVn,
           titleEn,
           descriptionEn,
+          group,
+          tags,
+          summaryEn,
+          summaryVn,
+        } = req.body;
+        const result = await newsModel.findOneAndUpdate({
+          titleVn,
+          descriptionVn,
+          summaryVn,
+          titleEn,
+          descriptionEn,
+          summaryEn,
           avatar,
           group,
           tags,
