@@ -6,6 +6,8 @@ import demo2Proxy from './proxy/demo2';
 import newsApis from './news';
 import mediaApis from './media';
 
+import testApis from './test';
+
 const apis: (ExpressHandler | ProxyExpressHandler)[] = [
   ...healthCheckApis,
   ...loggerCfgApis,
@@ -13,5 +15,6 @@ const apis: (ExpressHandler | ProxyExpressHandler)[] = [
   ...demo2Proxy,
   ...newsApis,
   ...mediaApis,
+  ...testApis,
 ];
 export default apis;
