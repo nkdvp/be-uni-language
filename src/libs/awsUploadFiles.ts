@@ -17,9 +17,9 @@ const s3Client = new S3Client({
 export async function uploadFile(file: Express.Multer.File): Promise<I_FunctionResult> {
   try {
     const presentTime = new Date();
-    const key = `${presentTime.getUTCFullYear()}-${presentTime.getUTCMonth()}/${(
-      file.originalname || ''
-    ).replace(/ /g, '-')}`;
+    const key = `${presentTime.getUTCFullYear()}-${('0' + (presentTime.getUTCMonth() + 1)).slice(
+      -2,
+    )}/${(file.originalname || '').replace(/ /g, '-')}`;
     const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
