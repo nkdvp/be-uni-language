@@ -5,4 +5,10 @@ interface I_CommonInfo {
   updatedBy: string;
 }
 
-export { I_CommonInfo };
+interface I_FunctionResult {
+  succeed: boolean;
+  message?: string;
+  meta?: any;
+}
+
+export { I_CommonInfo, I_FunctionResult };

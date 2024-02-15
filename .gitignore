@@ -2,3 +2,5 @@ node_modules
 localHostNames.json
 .DS_Store
 dist
+.env
+ecosystem.config.js
