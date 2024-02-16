@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
-import * as apmAgent from 'elastic-apm-node/start';
+// import * as apmAgent from 'elastic-apm-node/start';
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-apmAgent;
+// apmAgent;
 import cluster from 'cluster';
 import os from 'os';
 import ExpressServer from './express';
