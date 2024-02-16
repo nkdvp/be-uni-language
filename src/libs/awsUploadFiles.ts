@@ -26,7 +26,7 @@ export async function uploadFile(file: Express.Multer.File): Promise<I_FunctionR
       Body: file.buffer,
       ContentType: file.mimetype,
     });
-    const url = `https://${BUCKET_NAME}.s3.${S3_REGION}.amazonaws.com/${key}`;
+    const url = `https://${BUCKET_NAME}.s3.${S3_REGION}.amazonaws.com/${key}${Date.now()}`;
 
     const results = await s3Client.send(command);
 
