@@ -19,14 +19,14 @@ export async function uploadFile(file: Express.Multer.File): Promise<I_FunctionR
     const presentTime = new Date();
     const key = `${presentTime.getUTCFullYear()}-${('0' + (presentTime.getUTCMonth() + 1)).slice(
       -2,
-    )}/${(file.originalname || '').replace(/ /g, '-')}`;
+    )}/${Date.now()}${(file.originalname || '').replace(/ /g, '-')}`;
     const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
     });
-    const url = `https://${BUCKET_NAME}.s3.${S3_REGION}.amazonaws.com/${key}${Date.now()}`;
+    const url = `https://${BUCKET_NAME}.s3.${S3_REGION}.amazonaws.com/${key}`;
 
     const results = await s3Client.send(command);
 
