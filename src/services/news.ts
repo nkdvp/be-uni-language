@@ -11,9 +11,53 @@ import { SearchPagingMongoValidator } from '../DTOs/common';
 import { toMongoCriteria } from '../libs/querystring';
 import { newsFields } from '../constants/fieldDescriptions';
 import mongoose from 'mongoose';
+import lodash from 'lodash';
 
 const logger = Logger.create('news.ts');
+const shuffle = (array: number[]): number[] => {
+  const result = lodash.cloneDeep(array);
+  for (let i = 0; i < array.length; i++) {
+    const j = Math.floor(Math.random() * array.length);
+    const tmp = result[i];
+    result[i] = result[j];
+    result[j] = tmp;
+  }
+
+  return result;
+};
+
 const apis: ExpressHandler[] = [
+  // search for news
+  {
+    path: '/news/search_random',
+    method: 'POST',
+    params: {
+      $$strict: true,
+      numRecord: 'number|default:5',
+    },
+    action: async (req, res) => {
+      try {
+        logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
+
+        const { numRecord } = req.body;
+        // eslint-disable-next-line no-param-reassign
+        const count = await newsModel.count();
+        const originArray = Array.from(Array(count).keys());
+        //=> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        const shuffleArray = shuffle(originArray);
+        const listIdx = shuffleArray.slice(0, numRecord);
+        const result = await Promise.all(
+          listIdx.map((idx) => newsModel.findOne().skip(idx).lean()),
+        );
+
+        return customResponse(res, '', '', result, 200);
+      } catch (err: any) {
+        logger.error(req.originalUrl, req.method, 'error:', err.message);
+
+        return customError(res, err.message, langs.INTERNAL_SERVER_ERROR, null);
+      }
+    },
+  },
   // search for news
   {
     path: '/news/search',
@@ -80,7 +124,11 @@ const apis: ExpressHandler[] = [
         const id = req.params.id;
         if (!mongoose.isValidObjectId(id))
           return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
-        const result = await newsModel.findById(id);
+        const result = await newsModel.findByIdAndUpdate(
+          id,
+          { $inc: { viewCount: 1 } },
+          { new: true },
+        );
 
         return customResponse(res, '', '', result);
       } catch (err: any) {

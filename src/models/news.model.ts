@@ -16,6 +16,10 @@ const testSchema = new mongoose.Schema<I_News>(
     createdBy: String,
     updatedAt: Date,
     updatedBy: String,
+    viewCount: {
+      type: Number,
+      default: 0,
+    }
   },
   { collection: 'news' },
 );

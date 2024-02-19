@@ -9,6 +9,7 @@ interface I_News extends I_CommonInfo {
   avatar: string;
   group: string;
   tags: string[];
+  viewCount: number;
 }
 
 

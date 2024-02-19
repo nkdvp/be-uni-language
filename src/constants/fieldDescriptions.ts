@@ -14,7 +14,6 @@ const newsFields: FieldDescription[] = [
     field: 'group',
     dataType: DataType.STRING,
   },
-
 ];
 
 export { newsFields };
