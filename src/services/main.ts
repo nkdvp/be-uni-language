@@ -6,6 +6,7 @@ import demo2Proxy from './proxy/demo2';
 import newsApis from './news';
 import mediaApis from './media';
 import s3UploadApis from './s3Upload';
+import mailApis from './mail';
 
 import testApis from './test';
 
@@ -18,5 +19,6 @@ const apis: (ExpressHandler | ProxyExpressHandler)[] = [
   ...mediaApis,
   ...s3UploadApis,
   ...testApis,
+  ...mailApis,
 ];
 export default apis;
