@@ -3,6 +3,7 @@ import Logger from '../libs/logger';
 import langs from '../constants/langs';
 import multer from 'multer';
 import { uploadFile } from '../libs/awsUploadFiles';
+import { prefixApi } from '../constants/common';
 // import { uploadFileFunc } from '../libs/awsUploadFiles';
 
 const logger = Logger.create('S3_UPLOAD_API.ts');
@@ -14,7 +15,7 @@ const upload = multer({ storage: storage });
 const apis: ExpressHandler[] = [
   // upload file to S3
   {
-    path: '/media/upload',
+    path: prefixApi +'/media/upload',
     method: 'POST',
     preValidatorMiddlewares: [upload.single('file')],
     params: {

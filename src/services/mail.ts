@@ -2,12 +2,13 @@ import { ExpressHandler, customResponse, customError } from '../interfaces/expre
 import Logger from '../libs/logger';
 import langs from '../constants/langs';
 import sendMailFn from '../libs/mail/send';
+import { prefixApi } from '../constants/common';
 
 const logger = Logger.create('mail.ts');
 const apis: ExpressHandler[] = [
   // send an email
   {
-    path: '/mail',
+    path: `${prefixApi}/mail`,
     method: 'POST',
     params: {
       $$strict: true,

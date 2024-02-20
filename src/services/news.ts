@@ -12,6 +12,7 @@ import { toMongoCriteria } from '../libs/querystring';
 import { newsFields } from '../constants/fieldDescriptions';
 import mongoose from 'mongoose';
 import lodash from 'lodash';
+import { prefixApi } from '../constants/common';
 
 const logger = Logger.create('news.ts');
 const shuffle = (array: number[]): number[] => {
@@ -29,7 +30,7 @@ const shuffle = (array: number[]): number[] => {
 const apis: ExpressHandler[] = [
   // search for news
   {
-    path: '/news/search_random',
+    path: prefixApi + '/news/search_random',
     method: 'POST',
     params: {
       $$strict: true,
@@ -60,7 +61,7 @@ const apis: ExpressHandler[] = [
   },
   // search for news
   {
-    path: '/news/search',
+    path: prefixApi +'/news/search',
     method: 'POST',
     params: SearchPagingMongoValidator,
     action: async (req, res) => {
@@ -90,7 +91,7 @@ const apis: ExpressHandler[] = [
   },
   // Count for news
   {
-    path: '/news/count',
+    path: prefixApi +'/news/count',
     method: 'POST',
     params: SearchPagingMongoValidator,
     action: async (req, res) => {
@@ -112,7 +113,7 @@ const apis: ExpressHandler[] = [
   },
   // a news
   {
-    path: '/news/:id',
+    path: prefixApi +'/news/:id',
     method: 'GET',
     params: {
       $$strict: false,
@@ -140,7 +141,7 @@ const apis: ExpressHandler[] = [
   },
   // create a news
   {
-    path: '/news',
+    path: prefixApi +'/news',
     method: 'POST',
     params: {
       $$strict: true,
@@ -201,7 +202,7 @@ const apis: ExpressHandler[] = [
   },
   // update a news
   {
-    path: '/news/:id',
+    path: prefixApi +'/news/:id',
     method: 'PATCH',
     params: {
       $$strict: true,
