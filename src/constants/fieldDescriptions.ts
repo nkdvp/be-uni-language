@@ -14,6 +14,10 @@ const newsFields: FieldDescription[] = [
     field: 'group',
     dataType: DataType.STRING,
   },
+  {
+    field: 'viewCount',
+    dataType: DataType.INTEGER,
+  },
 ];
 
 export { newsFields };
