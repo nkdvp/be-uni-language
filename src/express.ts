@@ -16,7 +16,13 @@ async function ExpressServer() {
   const app = express();
   // setup global middleware
   app.use(helmet());
-  app.use(cors());
+  app.use(
+    cors({
+      origin: 'http://localhost:3000',
+      methods: ['GET', 'POST', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+  );
   let excludeProxyPath = '';
   const proxyPathList: string[] = [];
   //extract proxy for global middleware config

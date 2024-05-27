@@ -1,5 +1,6 @@
 import { I_CommonInfo } from './common';
 interface I_News extends I_CommonInfo {
+  titleImage: string;
   titleVn: string;
   descriptionVn: string;
   summaryVn: string;

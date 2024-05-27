@@ -145,6 +145,7 @@ const apis: ExpressHandler[] = [
     method: 'POST',
     params: {
       $$strict: true,
+      titleImage: 'string|optional',
       titleVn: 'string|min:10',
       descriptionVn: 'string|min:10',
       summaryVn: 'string|min:10',
@@ -167,6 +168,7 @@ const apis: ExpressHandler[] = [
         logger.debug(req.originalUrl, req.method, req.params, req.query, req.body);
 
         const {
+          titleImage,
           titleVn,
           avatar,
           descriptionVn,
@@ -179,6 +181,7 @@ const apis: ExpressHandler[] = [
         } = req.body;
         // const test = await newsModel.findOne().lean(); return customResponse(res, '', '', test);
         const result = await newsModel.create({
+          titleImage,
           titleVn,
           descriptionVn,
           titleEn,
@@ -206,6 +209,7 @@ const apis: ExpressHandler[] = [
     method: 'PATCH',
     params: {
       $$strict: true,
+      titleImage: 'string|optional',
       titleVn: 'string|optional|min:10',
       descriptionVn: 'string|optional|min:10',
       summaryVn: 'string|min:10|optional',
@@ -227,6 +231,7 @@ const apis: ExpressHandler[] = [
         const id = req.params.id;
         if (!id) return customError(res, 'id invalid', langs.BAD_REQUEST, null, 400);
         const {
+          titleImage,
           titleVn,
           avatar,
           descriptionVn,
@@ -238,6 +243,7 @@ const apis: ExpressHandler[] = [
           summaryVn,
         } = req.body;
         const result = await newsModel.findOneAndUpdate({
+          titleImage,
           titleVn,
           descriptionVn,
           summaryVn,

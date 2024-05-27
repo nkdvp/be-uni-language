@@ -3,6 +3,7 @@ import { I_News } from '../interfaces/news';
 
 const testSchema = new mongoose.Schema<I_News>(
   {
+    titleImage: String,
     titleVn: String,
     descriptionVn: String,
     titleEn: String,
