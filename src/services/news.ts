@@ -149,9 +149,9 @@ const apis: ExpressHandler[] = [
       titleVn: 'string|min:10',
       descriptionVn: 'string|min:10',
       summaryVn: 'string|min:10',
-      titleEn: 'string|min:10',
-      descriptionEn: 'string|min:10',
-      summaryEn: 'string|min:10',
+      titleEn: 'string|min:10|optional',
+      descriptionEn: 'string|min:10|optional',
+      summaryEn: 'string|min:10|optional',
       avatar: 'string|optional',
       group: {
         type: 'string',
