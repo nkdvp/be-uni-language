@@ -3,4 +3,4 @@ localHostNames.json
 .DS_Store
 dist
 .env
-ecosystem.config.js
+# ecosystem.config.js
